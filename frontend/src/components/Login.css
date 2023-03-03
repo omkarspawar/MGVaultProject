@@ -1,0 +1,57 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  h1 {
+    margin-top: 0;
+  }
+  
+  label {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+  }
+  
+  input {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 1rem;
+  }
+  
+  button {
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  @media (min-width: 768px) {
+    .login-container {
+      background-image: url('https://source.unsplash.com/1600x900/?nature,water');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    }
+  
+    .login-form {
+      width: 50%;
+      margin: auto;
+    }
+  }
+  

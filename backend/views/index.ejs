@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MGVault</title>
+   
+</head>
+
+<body>
+    <div class="container" style=" display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <form id="myForm"
+            style=" display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;">
+            <h3 style="font-size: 1.2rem; margin-bottom: 16px;">Please enter 6 digit secret code to download the file !
+            </h3>
+            <input maxlength="6" id="inputdata" type="text" placeholder="Enter your text"  style="padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 16px;
+            font-size: 1rem;" />
+            <button id="submitbtn" type="submit" style="padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;">Submit</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById("myForm").onsubmit = function (e) {
+            e.preventDefault();
+            console.log("<%= DocumentIdData %>");
+            let DocId = "<%= DocumentIdData %>"
+            let secretCode = document.getElementById('inputdata').value;
+            console.log(secretCode);
+            const body = {
+                documentId: DocId,
+                secretCode: secretCode
+            }
+
+
+            fetch("http://localhost:4000/api/DownloadDocument/verifyCode", {
+                method: 'POST',
+                headers: new Headers({
+                    "Content-Type": "application/json"
+                }),
+                body: JSON.stringify(body),
+            })
+                .then(response => response.json())
+                .then(res => {
+                    console.log(res);
+                    if (res.SUCCESS == true) {
+                        res.URL
+                        downloadFile(res.URL, res.DOCNAME)
+                        // ***********local data cannot be fetch so to test comment upper line and uncomment below line******************
+                        
+                        // downloadFile("https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*", res.DOCNAME)
+                    }else{
+                        alert(res.MESSAGE)
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                });
+        };
+        const downloadFile = (url, fileName) => {
+            console.log("k", url, fileName);
+            fetch(url)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', fileName);
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                });
+        }
+    </script>
+</body>
+
+</html>
